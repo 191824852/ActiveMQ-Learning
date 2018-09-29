@@ -24,6 +24,7 @@ public class ActiveMQProducter {
 //        开启链接
         connection.start();
 //        创建会话，并指定会话的事务（true）以及应答模式（自动确认模式）
+//        如果是以事务形式签收的话，生产和消费必须Commit；手动签收一般 Session.CLIENT_ACKNOWLEDGE 消费者需要手动签收
         Session session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);
 //        创建一个Queue（消息队列）
         Queue queue_demo = session.createQueue(queueName);

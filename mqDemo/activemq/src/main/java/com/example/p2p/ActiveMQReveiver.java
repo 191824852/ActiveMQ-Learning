@@ -19,7 +19,7 @@ public class ActiveMQReveiver {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(userName, passWord, brokerURL);
         Connection connection = connectionFactory.createConnection();
         connection.start();
-        Session session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);
+        Session session = connection.createSession(Boolean.FALSE, Session.SESSION_TRANSACTED);
         Queue queue = session.createQueue(queueName);
 //        创建消费者
         MessageConsumer consumer = session.createConsumer(queue);
@@ -37,7 +37,8 @@ public class ActiveMQReveiver {
             TextMessage msg = (TextMessage) message;
             try {
                 System.out.println("msg = " + msg.getText());
-                session.commit();
+                msg.acknowledge(); //代表已签收，可以理解为确认签收 （手动签收模式下）
+//                session.commit(); // 事务方式commit
             } catch (JMSException e) {
                 e.printStackTrace();
             }
