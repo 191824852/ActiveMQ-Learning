@@ -12,7 +12,12 @@ import org.springframework.stereotype.Component;
 public class Consumer {
 
     @JmsListener(destination = "${queue}",containerFactory = "queueListenerFactory")
-    public void receive(String message){
+    public void receiveLog(String message){
+        System.out.println("监听器收到msg:" + message + Thread.currentThread().getName());
+    }
+
+    @JmsListener(destination = "${msgQueue}",containerFactory = "queueListenerFactory")
+    public void receiveMsg(String message){
         System.out.println("监听器收到msg:" + message + Thread.currentThread().getName());
     }
 

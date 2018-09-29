@@ -5,6 +5,7 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.jms.Queue;
 import javax.jms.Topic;
 import java.time.Instant;
@@ -19,17 +20,27 @@ public class Provider {
     @Autowired
     private JmsMessagingTemplate template;
 
-    @Autowired
-    private Queue queue;
+    @Resource(name = "logQueue")
+    private Queue logQueue;
+
+    @Resource(name = "msgQueue")
+    private Queue msgQueue;
 
     @Autowired
     private Topic topic;
 
     @Scheduled(fixedDelay = 5000)
-    public void send() {
-        System.out.println("点对点模式（p2p） 生产者:" +Instant.now());
-        template.convertAndSend(queue, "点对点(p2p):" + Instant.now());
+    public void sendLog() {
+        System.out.println("点对点模式（p2p） 生产者---logQueue:" +Instant.now());
+        template.convertAndSend(logQueue, "点对点(p2p)---logQueue:" + Instant.now());
     }
+
+    @Scheduled(fixedDelay = 5000)
+    public void sendMsg() {
+        System.out.println("点对点模式（p2p） 生产者---msgQueue:" +Instant.now());
+        template.convertAndSend(msgQueue, "点对点(p2p)---msgQueue:" + Instant.now());
+    }
+
 
     @Scheduled(fixedDelay = 5000)
     public void sendTopic(){

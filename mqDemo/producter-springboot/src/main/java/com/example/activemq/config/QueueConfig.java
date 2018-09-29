@@ -19,20 +19,21 @@ public class QueueConfig {
     @Value("${queue}")
     private String queueName;
 
-    @Value("${msgQueueName}")
+    @Value("${msgQueue}")
     private String msgQueueName;
 
 
     @Value("${topic}")
     private String topicName;
 
-//    点对点消息队列
-    @Bean
+//    点对点消息队列 log队列
+    @Bean(name = "logQueue")
     public Queue initLogQueue() {
         return new ActiveMQQueue(queueName);
     }
 
-    @Bean
+//    点对点消息队列 msg队列
+    @Bean(name="msgQueue")
     public Queue initMsgQueue(){return new ActiveMQQueue(msgQueueName);}
 
 
